@@ -9,7 +9,7 @@ type Feature struct {
 }
 
 type FeaturePoint struct {
-	ID        int `json:"id"`
+	PackageID int `json:"package_id"`
 	FeatureID int `json:"feature_id"`
 
 	Meta base.Metadata
