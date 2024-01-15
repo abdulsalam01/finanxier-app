@@ -1,1 +1,1 @@
-package mq
+package main

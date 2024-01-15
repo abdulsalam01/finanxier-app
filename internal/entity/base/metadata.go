@@ -8,3 +8,7 @@ type Metadata struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type ExtraAttribute struct {
+	IsActive bool `json:"is_active"`
+}

@@ -1,0 +1,28 @@
+app:
+  name: "AppName"
+  port: "8080"
+
+database:
+  driver: "postgre"
+  port: "5432"
+  host: "localhost"
+  name: "dbName"
+  user: "dbUser"
+  password: "dbPassword"
+  extras:
+    timeout: 100s # In duration.
+    max: 100 # Max connection.
+    idle: 50 # Idle connection.
+
+services:
+  storage:
+    firebase:
+      client_id: "x"
+      client_secret: "y"
+  oauth:
+    google:
+      client_id: "z"
+      client_secret: "a"
+    facebook:
+      client_id: ""
+      client_secret: ""
