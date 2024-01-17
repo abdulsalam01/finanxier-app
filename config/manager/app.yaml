@@ -10,9 +10,10 @@ database:
   user: "dbUser"
   password: "dbPassword"
   extras:
-    timeout: 100s # In duration.
+    timeout: 1000ms # In duration.
     max: 100 # Max connection.
-    idle: 50 # Idle connection.
+    min: 2 # Min connection.    
+    idle: 10 # Idle connection.
 
 services:
   storage:
