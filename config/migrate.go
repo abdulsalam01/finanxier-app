@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func SchemaMigrate(connUrl string, version int) error {
+func SchemaMigrate(connUrl string, version uint) error {
 	var err error
 
 	migations, err := migrate.New("file://config/database/migrations", connUrl)
@@ -15,7 +15,7 @@ func SchemaMigrate(connUrl string, version int) error {
 		return err
 	}
 
-	err = migations.Force(version)
+	err = migations.Migrate(version)
 	if err != nil {
 		return err
 	}
