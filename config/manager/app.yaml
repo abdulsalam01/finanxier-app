@@ -6,10 +6,11 @@ database:
   driver: "postgre"
   port: "5432"
   host: "localhost"
-  name: "dbName"
-  user: "dbUser"
-  password: "dbPassword"
+  name: "sekejap-app"
+  user: "postgres"
+  password: "postgres"
   extras:
+    ssl_mode: "disable" # Configuration for sslmode=disable.
     timeout: 1000ms # In duration.
     max: 100 # Max connection.
     min: 2 # Min connection.    

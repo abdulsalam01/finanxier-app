@@ -27,12 +27,13 @@ func Initializer(ctx context.Context, config *config.Config) (BaseInitializer, e
 	 * Configuration layer.
 	 * Database section.
 	 */
-	dbUrlConnection := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s",
+	dbUrlConnection := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=%s",
 		config.Database.Username,
 		config.Database.Password,
 		config.Database.Host,
 		config.Database.Port,
 		config.Database.Name,
+		config.Database.Extras[constant.DatabaseSSLMode].(string),
 	)
 
 	dbDurationMax, err := time.ParseDuration(config.Database.Extras[constant.DatabaseTimeout].(string))
@@ -52,13 +53,15 @@ func Initializer(ctx context.Context, config *config.Config) (BaseInitializer, e
 	dbConfig.MinConns = int32(config.Database.Extras[constant.DatabaseMinConnection].(int))
 	dbConfig.MaxConnLifetime = dbDurationMax
 	dbConfig.ConnConfig.ConnectTimeout = dbDurationMax
+	dbConfig.ConnConfig.Tracer = &dbQueryTracer{logrus.StandardLogger()} // Tracer settings.
+
 	// Tie with database pool configuration.
 	dbPool, err := pgxpool.NewWithConfig(ctx, dbConfig)
 	if err != nil {
 		logrus.Fatalf("Unable to create connection pool: %v\n", err)
 		return initializer, err
 	}
-	defer dbPool.Close()
+	defer dbPool.Reset()
 
 	/*
 	 * Configuration layer.

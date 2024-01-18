@@ -5,4 +5,5 @@ const (
 	DatabaseMaxConnection  = "max"
 	DatabaseMinConnection  = "min"
 	DatabaseIdleConnection = "idle"
+	DatabaseSSLMode        = "ssl_mode"
 )

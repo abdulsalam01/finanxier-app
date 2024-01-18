@@ -22,21 +22,32 @@ const (
 func main() {
 	ctx := context.Background()
 
-	config, err := config.NewConfigManager(configPath)
+	logrus.Info("Load config manager")
+	configs, err := config.NewConfigManager(configPath)
 	if err != nil {
 		logrus.Errorf("Error when loading config file %v", err)
 		return
 	}
 
 	// Init initializer.
-	_, err = app.Initializer(ctx, config)
+	logrus.Info("Load initializer helper")
+	baseInitializer, err := app.Initializer(ctx, configs)
+
+	// Init Schema migrations.
+	logrus.Warnf("Run schema migrations on %s", baseInitializer.Database.Config().ConnConfig.Database)
+	err = config.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
+	if err != nil {
+		logrus.Errorf("Error when setup migrations %v", err)
+		return
+	}
 
 	// Init routes.
+	logrus.Info("Setup routes")
 	routes := initializeRoutes(ctx)
 
 	// Start server.
-	logrus.Infof("Server start at port :%s", config.App.Port)
-	http.ListenAndServe(fmt.Sprintf(":%s", config.App.Port), routes)
+	logrus.Infof("Server start at port :%s", configs.App.Port)
+	http.ListenAndServe(fmt.Sprintf(":%s", configs.App.Port), routes)
 }
 
 func initializeRoutes(
