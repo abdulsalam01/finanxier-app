@@ -41,6 +41,11 @@ func main() {
 		if err != nil {
 			logrus.Errorf("Fails when setup migrations %v", err)
 		}
+
+		err = config.SchemaSeed(ctx, baseInitializer.DatabaseHelper)
+		if err != nil {
+			logrus.Errorf("Fails when setup seeder %v", err)
+		}
 	}
 
 	// Init routes.

@@ -7,3 +7,12 @@ const (
 	DatabaseIdleConnection = "idle"
 	DatabaseSSLMode        = "ssl_mode"
 )
+
+const (
+	ChannelsTable          = "channels"
+	FeaturesTable          = "features"
+	PackagesTable          = "packages"
+	ProductsTable          = "products"
+	SubscriptionsPlanTable = "subscription_plan"
+	UsersTable             = "users"
+)

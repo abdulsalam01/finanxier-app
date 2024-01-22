@@ -7,9 +7,14 @@ import (
 
 	"github.com/api-sekejap/config"
 	"github.com/api-sekejap/internal/constant"
+	db "github.com/api-sekejap/pkg/database"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 )
+
+type BaseAppInitializer struct {
+	db.DatabaseHelper
+}
 
 // Base initializer function to return base of application requirements.
 // This function will contains:
@@ -17,9 +22,9 @@ import (
 // 2. Logging.
 // 3. Redis.
 // 4. ErrorWrapper.
-func Initializer(ctx context.Context, config *config.Config) (BaseInitializer, error) {
+func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer, error) {
 	var (
-		initializer BaseInitializer
+		initializer BaseAppInitializer
 		err         error
 	)
 
@@ -79,8 +84,8 @@ func Initializer(ctx context.Context, config *config.Config) (BaseInitializer, e
 	 */
 
 	// Initializer all here.
-	initializer = BaseInitializer{
-		Database: dbPool,
+	initializer = BaseAppInitializer{
+		db.DatabaseHelper{Database: dbPool},
 	}
 	return initializer, nil
 }

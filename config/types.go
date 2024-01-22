@@ -1,8 +1,11 @@
 package config
 
 import (
+	"context"
+
 	"github.com/api-sekejap/internal/constant"
 	"github.com/api-sekejap/internal/entity"
+	db "github.com/api-sekejap/pkg/database"
 )
 
 type Config struct {
@@ -44,10 +47,20 @@ type authService struct {
 	Facebook entity.FacebookAuth `json:"facebook" yaml:"facebook"`
 }
 
-type seederRunner[T any] struct {
-	Data T      `json:"data"`
-	Type string `json:"string"`
+type seederRunner struct {
+	Data any    `json:"data"`
+	Type string `json:"type"`
 }
+
+// Seeder interface for all seeders.
+type seederResources interface {
+	Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error
+}
+
+// Implement Seeder for all tables.
+type ChannelSeeder struct{}
+type UserSeeder struct{}
+type FeatureSeeder struct{}
 
 // To determine testing and actual environment, setup proper env to do a RnD and enable after-research-implementer.
 // Development mode.

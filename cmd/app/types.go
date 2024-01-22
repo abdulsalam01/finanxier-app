@@ -4,13 +4,8 @@ import (
 	"context"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 )
-
-type BaseInitializer struct {
-	Database *pgxpool.Pool
-}
 
 // Private struct helper.
 // Goes here:
