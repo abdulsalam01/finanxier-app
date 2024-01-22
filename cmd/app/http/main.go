@@ -33,12 +33,14 @@ func main() {
 	logrus.Info("Load initializer helper")
 	baseInitializer, err := app.Initializer(ctx, configs)
 
-	// Init Schema migrations.
-	logrus.Warnf("Run schema migrations on %s", baseInitializer.Database.Config().ConnConfig.Database)
-	err = config.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
-	if err != nil {
-		logrus.Errorf("Error when setup migrations %v", err)
-		return
+	// Only do for dev mode.
+	if configs.IsDevelopmentMode() {
+		// Init Schema migrations.
+		logrus.Infof("Run schema migrations on %s", baseInitializer.Database.Config().ConnConfig.Database)
+		err = config.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
+		if err != nil {
+			logrus.Errorf("Fails when setup migrations %v", err)
+		}
 	}
 
 	// Init routes.

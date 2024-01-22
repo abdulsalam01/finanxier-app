@@ -1,6 +1,9 @@
 package config
 
-import "github.com/api-sekejap/internal/entity"
+import (
+	"github.com/api-sekejap/internal/constant"
+	"github.com/api-sekejap/internal/entity"
+)
 
 type Config struct {
 	App      `json:"app" yaml:"app"`
@@ -9,8 +12,9 @@ type Config struct {
 }
 
 type App struct {
-	Name string `json:"name" yaml:"name"`
-	Port string `json:"port" yaml:"port"`
+	Name        string       `json:"name" yaml:"name"`
+	Port        string       `json:"port" yaml:"port"`
+	Environment constant.Env `json:"env" yaml:"env"`
 }
 
 type Database struct {
@@ -38,4 +42,28 @@ type storageService struct {
 type authService struct {
 	Google   entity.GoogleAuth   `json:"google" yaml:"google"`
 	Facebook entity.FacebookAuth `json:"facebook" yaml:"facebook"`
+}
+
+type seederRunner[T any] struct {
+	Data T      `json:"data"`
+	Type string `json:"string"`
+}
+
+// To determine testing and actual environment, setup proper env to do a RnD and enable after-research-implementer.
+// Development mode.
+func (c *Config) IsDevelopmentMode() bool {
+	if c.App.Environment == constant.EnvDevelopment {
+		return true
+	}
+
+	return false
+}
+
+// Staging mode.
+func (c *Config) IsStagingMode() bool {
+	if c.App.Environment == constant.EnvStaging {
+		return true
+	}
+
+	return false
 }
