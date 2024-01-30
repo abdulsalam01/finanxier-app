@@ -6,7 +6,7 @@ import (
 )
 
 func parserParams(params entity.Channel) Channels {
-	return Channels{
+	c := Channels{
 		PackageID:   params.PackageID,
 		Name:        params.Name,
 		Link:        params.Link,
@@ -15,4 +15,10 @@ func parserParams(params entity.Channel) Channels {
 		Meta:        base.Metadata(params.Meta),
 		Extra:       base.ExtraAttribute(params.Extra),
 	}
+
+	if params.ID > 0 {
+		c.ID = params.ID
+	}
+
+	return c
 }

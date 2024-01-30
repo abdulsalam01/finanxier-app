@@ -48,8 +48,8 @@ type authService struct {
 }
 
 type seederRunner struct {
-	Data any    `json:"data"`
-	Type string `json:"type"`
+	Data []interface{} `json:"data"`
+	Type string        `json:"type"`
 }
 
 // Seeder interface for all seeders.

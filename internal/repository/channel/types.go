@@ -8,7 +8,7 @@ import (
 )
 
 type Channels struct {
-	ID          int    `json:"id" db:"id"`
+	ID          int    `json:"id" db:"id" table:"channels"`
 	PackageID   int    `json:"package_id" db:"package_id"`
 	Name        string `json:"name" db:"name"`
 	Link        string `json:"link" db:"link"`

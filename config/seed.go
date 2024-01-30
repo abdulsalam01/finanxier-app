@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -26,7 +25,7 @@ func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
 	if err != nil {
 		return err
 	}
-	err = runner.normalizeSeeders(keyPath, dataParser)
+	err = runner.normalizeSeeders(seederPath, dataParser)
 	if err != nil {
 		return err
 	}
@@ -82,8 +81,7 @@ func (s *seederRunner) normalizeSeeders(path string, typ int) error {
 				return err
 			}
 
-			s.Data = instance
-			fmt.Printf("%+v", s.Data)
+			s.Data = append(s.Data, instance)
 		case 1: // Type params structure.
 			err = json.Unmarshal(raw, &s)
 			if err != nil {
@@ -107,11 +105,11 @@ func (s *seederRunner) getTypeInstance() any {
 
 	switch s.Type {
 	case constant.ChannelsTable:
-		instance = new(entity.Channel)
+		instance = new([]entity.Channel)
 	case constant.UsersTable:
-		instance = new(entity.User)
+		instance = new([]entity.User)
 	case constant.FeaturesTable:
-		instance = new(entity.Feature)
+		instance = new([]entity.Feature)
 	default:
 		// Handle unknown type.
 		instance = new(struct{})
@@ -126,13 +124,19 @@ func (us UserSeeder) Seed(ctx context.Context, data seederRunner, base db.Databa
 }
 func (cs ChannelSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
 	var (
-		err error
+		err        error
+		dataParser []entity.Channel
 	)
 
 	dataRawParser := data.Data
-	dataParser, ok := dataRawParser.([]entity.Channel)
-	if !ok {
-		return errors.New("Failed parsing")
+	for _, v := range dataRawParser {
+		vParserRaw, ok := v.(*[]entity.Channel)
+		if !ok {
+			return errors.New("Failed parsing")
+		}
+
+		vParser := *vParserRaw
+		dataParser = append(dataParser, vParser...)
 	}
 
 	instance := channel.New(base.Database)
