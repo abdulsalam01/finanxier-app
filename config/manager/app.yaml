@@ -17,6 +17,11 @@ database:
     min: 2 # Min connection.    
     idle: 10 # Idle connection.
 
+redis:
+  host: "localhost:6379"
+  user: ""
+  password: ""
+
 services:
   storage:
     firebase:

@@ -3,31 +3,21 @@ package config
 import (
 	"github.com/api-sekejap/internal/constant"
 	"github.com/api-sekejap/internal/entity"
+	"github.com/api-sekejap/pkg/database"
+	"github.com/api-sekejap/pkg/redis"
 )
 
 type Config struct {
-	App      `json:"app" yaml:"app"`
-	Database `json:"database" yaml:"database"`
-	Service  `json:"service" yaml:"services"`
+	App               `json:"app" yaml:"app"`
+	database.Database `json:"database" yaml:"database"`
+	redis.MemoryCache `json:"redis" yaml:"redis"`
+	Service           `json:"service" yaml:"services"`
 }
 
 type App struct {
 	Name        string       `json:"name" yaml:"name"`
 	Port        string       `json:"port" yaml:"port"`
 	Environment constant.Env `json:"env" yaml:"env"`
-}
-
-type Database struct {
-	// Generic info.
-	Driver string `json:"driver" yaml:"driver"`
-	Port   string `json:"port" yaml:"port"`
-	Host   string `json:"host" yaml:"host"`
-
-	// Data info.
-	Name     string                 `json:"name" yaml:"name"`
-	Username string                 `json:"user" yaml:"user"`
-	Password string                 `json:"password" yaml:"password"`
-	Extras   map[string]interface{} `json:"extras" yaml:"extras"`
 }
 
 type Service struct {

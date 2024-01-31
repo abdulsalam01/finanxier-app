@@ -8,12 +8,14 @@ import (
 	"github.com/api-sekejap/config"
 	"github.com/api-sekejap/internal/constant"
 	db "github.com/api-sekejap/pkg/database"
+	redis "github.com/api-sekejap/pkg/redis"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 )
 
 type BaseAppInitializer struct {
 	db.DatabaseHelper
+	redis.RedisHelper
 }
 
 // Base initializer function to return base of application requirements.
@@ -77,6 +79,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	 * Configuration layer.
 	 * Redis section.
 	 */
+	redisMemory := redis.New(config.MemoryCache)
 
 	/*
 	 * Configuration layer.
@@ -86,6 +89,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	// Initializer all here.
 	initializer = BaseAppInitializer{
 		db.DatabaseHelper{Database: dbPool},
+		redis.RedisHelper{Memory: redisMemory},
 	}
 	return initializer, nil
 }
