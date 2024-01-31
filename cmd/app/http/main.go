@@ -7,6 +7,7 @@ import (
 
 	"github.com/api-sekejap/cmd/app"
 	"github.com/api-sekejap/config"
+	"github.com/api-sekejap/config/tools"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -37,14 +38,16 @@ func main() {
 	if configs.IsDevelopmentMode() {
 		// Init Schema migrations.
 		logrus.Infof("Run schema migrations on %s", baseInitializer.Database.Config().ConnConfig.Database)
-		err = config.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
+		schemaExists, err := tools.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
 		if err != nil {
 			logrus.Errorf("Fails when setup migrations %v", err)
 		}
-
-		err = config.SchemaSeed(ctx, baseInitializer.DatabaseHelper)
-		if err != nil {
-			logrus.Errorf("Fails when setup seeder %v", err)
+		if !schemaExists {
+			// Init schema seeders.
+			err = tools.SchemaSeed(ctx, baseInitializer.DatabaseHelper)
+			if err != nil {
+				logrus.Errorf("Fails when setup seeder %v", err)
+			}
 		}
 	}
 

@@ -4,11 +4,11 @@ const (
 	configFile = "/app.yaml"
 
 	// Seeder utility.
-	seederPath = "./config/database/seeders"
-	keyPath    = "./config/database/types"
+	SeederPath = "./config/database/seeders"
+	KeyPath    = "./config/database/types"
 )
 
 const (
-	dataParser = 0
-	typeParser = 1
+	DataParser = 0
+	TypeParser = 1
 )
