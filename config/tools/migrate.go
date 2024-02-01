@@ -22,7 +22,7 @@ func SchemaMigrate(connUrl string, version uint) (bool, error) {
 	if err != nil && err != migrate.ErrNilVersion {
 		return isExist, err
 	}
-	if ver == version { // Indicating the migrations is exists.
+	if (ver + 1) == version { // Indicating the migrations is exists.
 		return true, nil
 	}
 

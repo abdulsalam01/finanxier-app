@@ -12,32 +12,32 @@ type ?= defaultType
 # Default target executed when no arguments are given to make.
 default: build
 
-# Builds the project
+# Builds the project.
 build:
 	$(GOBUILD) -o $(BINARY_NAME) -v
 
-# Runs tests
+# Runs tests.
 test:
 	$(GOTEST) -v ./...
 
-# Cleans our project: deletes binaries
+# Cleans our project: deletes binaries.
 clean:
 	$(GOCLEAN)
 	rm -f $(BINARY_NAME)
 	rm -f $(BINARY_UNIX)
 
-# Runs the project
+# Runs the project.
 run-http:
 	$(GORUN) cmd/app/http/main.go
 run-grpc:
 	$(GORUN) cmd/app/grpc/main.go
 
-# Cross compilation
+# Cross compilation.
 build-linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
 
-# Seeder generator
-# Target for creating seeder and type JSON files
+# Seeder generator.
+# Target for creating seeder and type JSON files.
 seeder:
 	@echo '{\n    "type": "$(type)"\n}' > config/database/types/$(type).json
 	@echo '[]' > config/database/seeders/$(type).json

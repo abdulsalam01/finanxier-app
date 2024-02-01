@@ -3,6 +3,7 @@ package tools
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -14,7 +15,6 @@ import (
 	"github.com/api-sekejap/internal/repository/feature"
 	db "github.com/api-sekejap/pkg/database"
 	"github.com/jackc/pgx/v5"
-	"github.com/sirupsen/logrus"
 )
 
 func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
@@ -22,6 +22,9 @@ func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
 		err    error
 		runner seederRunner
 	)
+
+	// Init map.
+	runner.Data = make(map[string]interface{})
 
 	err = runner.normalizeSeeders(config.KeyPath, config.TypeParser)
 	if err != nil {
@@ -77,14 +80,14 @@ func (s *seederRunner) normalizeSeeders(path string, typ int) error {
 
 		switch typ {
 		case 0: // Data params structure.
-			instance := s.getTypeInstance()
+			key, instance := s.getTypeInstance()
 			err = json.Unmarshal(raw, &instance)
 			if err != nil {
 				// Handle the error from processing the JSON file.
 				return err
 			}
 
-			s.Data = append(s.Data, instance)
+			s.Data[key] = instance
 		case 1: // Type params structure.
 			err = json.Unmarshal(raw, &s)
 			if err != nil {
@@ -103,22 +106,29 @@ func (s *seederRunner) normalizeSeeders(path string, typ int) error {
 	return nil
 }
 
-func (s *seederRunner) getTypeInstance() any {
-	var instance any
+func (s *seederRunner) getTypeInstance() (string, any) {
+	var (
+		key      string
+		instance any
+	)
 
 	switch s.Type {
 	case constant.ChannelsTable:
+		key = constant.ChannelsTable
 		instance = new([]entity.Channel)
 	case constant.UsersTable:
+		key = constant.UsersTable
 		instance = new([]entity.User)
 	case constant.FeaturesTable:
+		key = constant.FeaturesTable
 		instance = new([]entity.Feature)
 	default:
 		// Handle unknown type.
+		key = constant.DefaultString
 		instance = new(struct{})
 	}
 
-	return instance
+	return key, instance
 }
 
 // Each struct function seeder implementations.
@@ -131,17 +141,14 @@ func (fs FeatureSeeder) Seed(ctx context.Context, data seederRunner, base db.Dat
 		dataParser []entity.Feature
 	)
 
-	dataRawParser := data.Data
-	for _, v := range dataRawParser {
-		vParserRaw, ok := v.(*[]entity.Feature)
-		if !ok {
-			logrus.Warn("Failed parsing")
-			continue
-		}
-
-		vParser := *vParserRaw
-		dataParser = append(dataParser, vParser...)
+	dataRawParser := data.Data[constant.FeaturesTable]
+	vParserRaw, ok := dataRawParser.(*[]entity.Feature)
+	if !ok {
+		return errors.New("Failed parsing")
 	}
+
+	vParser := *vParserRaw
+	dataParser = append(dataParser, vParser...)
 
 	instance := feature.New(base.Database)
 	err = base.WithTx(ctx, func(tx pgx.Tx) error {
@@ -162,17 +169,14 @@ func (cs ChannelSeeder) Seed(ctx context.Context, data seederRunner, base db.Dat
 		dataParser []entity.Channel
 	)
 
-	dataRawParser := data.Data
-	for _, v := range dataRawParser {
-		vParserRaw, ok := v.(*[]entity.Channel)
-		if !ok {
-			logrus.Warn("Failed parsing")
-			continue
-		}
-
-		vParser := *vParserRaw
-		dataParser = append(dataParser, vParser...)
+	dataRawParser := data.Data[constant.ChannelsTable]
+	vParserRaw, ok := dataRawParser.(*[]entity.Channel)
+	if !ok {
+		return errors.New("Failed parsing")
 	}
+
+	vParser := *vParserRaw
+	dataParser = append(dataParser, vParser...)
 
 	instance := channel.New(base.Database)
 	err = base.WithTx(ctx, func(tx pgx.Tx) error {
