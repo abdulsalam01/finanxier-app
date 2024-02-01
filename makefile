@@ -6,6 +6,8 @@ GOTEST=$(GOCMD) test
 GORUN=$(GOCMD) run
 BINARY_NAME=api-sekejap
 BINARY_UNIX=$(BINARY_NAME)_unix
+# Use the type variable from the command line or default to 'defaultType'
+type ?= defaultType
 
 # Default target executed when no arguments are given to make.
 default: build
@@ -33,5 +35,13 @@ run-grpc:
 # Cross compilation
 build-linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
+
+# Seeder generator
+# Target for creating seeder and type JSON files
+seeder:
+	@echo '{\n    "type": "$(type)"\n}' > config/database/types/$(type).json
+	@echo '[]' > config/database/seeders/$(type).json
+	@echo "JSON files created for type $(type)"
+
 
 .PHONY: default build test clean run-http run-grpc build-linux
