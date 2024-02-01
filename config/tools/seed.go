@@ -36,6 +36,7 @@ func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
 	return runner.exec(ctx, []seederResources{
 		ChannelSeeder{},
 		UserSeeder{},
+		FeatureSeeder{},
 	}, base)
 }
 
@@ -121,6 +122,9 @@ func (s *seederRunner) getTypeInstance() any {
 }
 
 // Each struct function seeder implementations.
+func (us UserSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
+	return nil
+}
 func (fs FeatureSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
 	var (
 		err        error
@@ -151,9 +155,6 @@ func (fs FeatureSeeder) Seed(ctx context.Context, data seederRunner, base db.Dat
 	})
 
 	return err
-}
-func (us UserSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
-	return nil
 }
 func (cs ChannelSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
 	var (

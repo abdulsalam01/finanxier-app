@@ -37,18 +37,10 @@ type authService struct {
 // To determine testing and actual environment, setup proper env to do a RnD and enable after-research-implementer.
 // Development mode.
 func (c *Config) IsDevelopmentMode() bool {
-	if c.App.Environment == constant.EnvDevelopment {
-		return true
-	}
-
-	return false
+	return c.App.Environment == constant.EnvDevelopment
 }
 
 // Staging mode.
 func (c *Config) IsStagingMode() bool {
-	if c.App.Environment == constant.EnvStaging {
-		return true
-	}
-
-	return false
+	return c.App.Environment == constant.EnvStaging
 }
