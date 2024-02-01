@@ -43,5 +43,8 @@ seeder:
 	@echo '[]' > config/database/seeders/$(type).json
 	@echo "JSON files created for type $(type)"
 
+# Migration generator.
+migration-create:
+	migrate create -ext sql -dir config/database/migrations ${name}
 
 .PHONY: default build test clean run-http run-grpc build-linux
