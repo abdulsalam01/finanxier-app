@@ -16,6 +16,7 @@ import (
 type BaseAppInitializer struct {
 	db.DatabaseHelper
 	redis.RedisHelper
+	redis.RedisLockerHelper
 }
 
 // Base initializer function to return base of application requirements.
@@ -80,6 +81,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	 * Redis section.
 	 */
 	redisMemory := redis.New(config.MemoryCache)
+	redisLocker := redis.NewLocker(redisMemory)
 
 	/*
 	 * Configuration layer.
@@ -90,6 +92,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	initializer = BaseAppInitializer{
 		db.DatabaseHelper{Database: dbPool},
 		redis.RedisHelper{Memory: redisMemory},
+		redis.RedisLockerHelper{Locker: redisLocker},
 	}
 	return initializer, nil
 }

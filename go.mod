@@ -20,6 +20,7 @@ require (
 )
 
 require (
+	github.com/bsm/redislock v0.9.4
 	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-chi/cors v1.2.1
 	github.com/golang-migrate/migrate/v4 v4.17.0
