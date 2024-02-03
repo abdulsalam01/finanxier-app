@@ -15,8 +15,8 @@ type Channels struct {
 	AssetUrl    string `json:"asset_url" db:"asset_url"`
 	Description string `json:"description" db:"description"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }
 
 type databaseResource interface {

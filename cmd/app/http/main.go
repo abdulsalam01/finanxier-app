@@ -38,16 +38,16 @@ func main() {
 	if configs.IsDevelopmentMode() {
 		// Init Schema migrations.
 		logrus.Infof("Run schema migrations on %s", baseInitializer.Database.Config().ConnConfig.Database)
-		schemaExists, err := tools.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
+		err := tools.SchemaMigrate(baseInitializer.Database.Config().ConnString(), app.DatabaseVersion)
 		if err != nil {
 			logrus.Errorf("Fails when setup migrations %v", err)
 		}
-		if !schemaExists {
-			// Init schema seeders.
-			err = tools.SchemaSeed(ctx, baseInitializer.DatabaseHelper)
-			if err != nil {
-				logrus.Errorf("Fails when setup seeder %v", err)
-			}
+
+		// Init schema seeders.
+		logrus.Info("Run schema seeders")
+		err = tools.SchemaSeed(ctx, baseInitializer.DatabaseHelper)
+		if err != nil {
+			logrus.Errorf("Fails when setup seeder %v", err)
 		}
 	}
 

@@ -7,30 +7,21 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func SchemaMigrate(connUrl string, version uint) (bool, error) {
+func SchemaMigrate(connUrl string, version uint) error {
 	var (
-		err     error
-		isExist bool
+		err error
 	)
 
 	migrations, err := migrate.New("file://config/database/migrations", connUrl)
 	if err != nil {
-		return isExist, err
+		return err
 	}
 
-	ver, _, err := migrations.Version()
-	if err != nil && err != migrate.ErrNilVersion {
-		return isExist, err
-	}
-	if (ver + 1) == version { // Indicating the migrations is exists.
-		return true, nil
-	}
-
-	err = migrations.Migrate(version)
+	err = migrations.Up()
 	if err != nil {
-		return isExist, err
+		return err
 	}
 
 	defer migrations.Close()
-	return isExist, nil
+	return nil
 }

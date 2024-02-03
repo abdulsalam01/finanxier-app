@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/api-sekejap/internal/entity"
+	"github.com/api-sekejap/pkg/database"
 	"github.com/wcamarao/pmx"
 )
 
@@ -16,7 +17,7 @@ func (c *FeaturesRepo) Create(ctx context.Context, params entity.Feature) (int, 
 	paramsParser := parserParams(params)
 	_, err = pmx.Insert(ctx, c.database, &paramsParser)
 	if err != nil {
-		return id, err
+		return id, database.WrapDuplicateKeyValueErr(err)
 	}
 
 	return id, nil

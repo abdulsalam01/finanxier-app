@@ -19,8 +19,9 @@ type Product struct {
 
 	PriceEvent []ProductPrice `json:"price_events"` // Holder for price event or discount.
 	Asset      []ProductAsset `json:"assets"`
-	Meta       base.Metadata
-	Extra      base.ExtraAttribute
+
+	base.Metadata
+	base.ExtraAttribute
 }
 
 type ProductPrice struct {
@@ -31,8 +32,8 @@ type ProductPrice struct {
 	Discount   int       `json:"discount"`
 	ExpiredAt  time.Time `json:"expired_at"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }
 
 type ProductAsset struct {
@@ -41,5 +42,5 @@ type ProductAsset struct {
 	Type      int    `json:"type"` // Indicate the asset type, could be: Cover, Slider, Etc.
 	AssetUrl  string `json:"asset_url"`
 
-	Meta base.Metadata
+	base.Metadata
 }

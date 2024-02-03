@@ -8,7 +8,10 @@ import (
 
 type seederRunner struct {
 	Data map[string]interface{} `json:"data"`
-	Type string                 `json:"type"`
+	Type map[string]string      `json:"type"`
+}
+type seederType struct {
+	Type string `json:"type"`
 }
 
 // Seeder interface for all seeders.

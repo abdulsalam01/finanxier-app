@@ -7,13 +7,13 @@ import (
 
 func parserParams(params entity.Channel) Channels {
 	c := Channels{
-		PackageID:   params.PackageID,
-		Name:        params.Name,
-		Link:        params.Link,
-		AssetUrl:    params.AssetUrl,
-		Description: params.Description,
-		Meta:        base.Metadata(params.Meta),
-		Extra:       base.ExtraAttribute(params.Extra),
+		PackageID:      params.PackageID,
+		Name:           params.Name,
+		Link:           params.Link,
+		AssetUrl:       params.AssetUrl,
+		Description:    params.Description,
+		Metadata:       base.Metadata(params.Metadata),
+		ExtraAttribute: base.ExtraAttribute(params.ExtraAttribute),
 	}
 
 	if params.ID > 0 {

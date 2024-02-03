@@ -11,6 +11,6 @@ type SubscriptionPlan struct {
 	Period               string  `json:"period"` // Could be: Monthly, 3/6 Month, Annualy.
 	PeriodFreeTrial      int     `json:"period_free_trial"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }

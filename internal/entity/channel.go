@@ -10,6 +10,6 @@ type Channel struct {
 	AssetUrl    string `json:"asset_url"`
 	Description string `json:"description"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }

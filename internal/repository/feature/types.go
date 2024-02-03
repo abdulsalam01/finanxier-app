@@ -12,8 +12,8 @@ type Features struct {
 	Name        string `json:"name" db:"name"`
 	Description string `json:"description" db:"description"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }
 
 type databaseResource interface {

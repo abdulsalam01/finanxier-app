@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/api-sekejap/config"
 	"github.com/api-sekejap/internal/constant"
@@ -24,7 +25,10 @@ func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
 	)
 
 	// Init map.
-	runner.Data = make(map[string]interface{})
+	runner = seederRunner{
+		Data: make(map[string]interface{}),
+		Type: make(map[string]string),
+	}
 
 	err = runner.normalizeSeeders(config.KeyPath, config.TypeParser)
 	if err != nil {
@@ -38,7 +42,6 @@ func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
 	// Executor runners.
 	return runner.exec(ctx, []seederResources{
 		ChannelSeeder{},
-		UserSeeder{},
 		FeatureSeeder{},
 	}, base)
 }
@@ -78,9 +81,14 @@ func (s *seederRunner) normalizeSeeders(path string, typ int) error {
 			return err
 		}
 
+		// Use the built-in function to obtain filename.
+		fileNormalize := filepath.Base(filePath)
+		// Normalize the fileName without extension, as same as name of constants againts file.
+		fileNormalizeWithoutExt := strings.TrimSuffix(fileNormalize, filepath.Ext(fileNormalize))
+
 		switch typ {
 		case 0: // Data params structure.
-			key, instance := s.getTypeInstance()
+			key, instance := s.getTypeInstance(fileNormalizeWithoutExt)
 			err = json.Unmarshal(raw, &instance)
 			if err != nil {
 				// Handle the error from processing the JSON file.
@@ -89,11 +97,14 @@ func (s *seederRunner) normalizeSeeders(path string, typ int) error {
 
 			s.Data[key] = instance
 		case 1: // Type params structure.
-			err = json.Unmarshal(raw, &s)
+			instance := seederType{}
+			err = json.Unmarshal(raw, &instance)
 			if err != nil {
 				// Handle the error from processing the JSON file.
 				return err
 			}
+
+			s.Type[instance.Type] = instance.Type
 		}
 		return nil
 	})
@@ -106,13 +117,20 @@ func (s *seederRunner) normalizeSeeders(path string, typ int) error {
 	return nil
 }
 
-func (s *seederRunner) getTypeInstance() (string, any) {
+func (s *seederRunner) getTypeInstance(fileName string) (string, any) {
 	var (
 		key      string
 		instance any
 	)
 
-	switch s.Type {
+	types, ok := s.Type[fileName]
+	if !ok {
+		// Handle unknown type.
+		key = constant.DefaultString
+		instance = new(struct{})
+	}
+
+	switch types {
 	case constant.ChannelsTable:
 		key = constant.ChannelsTable
 		instance = new([]entity.Channel)
@@ -122,10 +140,6 @@ func (s *seederRunner) getTypeInstance() (string, any) {
 	case constant.FeaturesTable:
 		key = constant.FeaturesTable
 		instance = new([]entity.Feature)
-	default:
-		// Handle unknown type.
-		key = constant.DefaultString
-		instance = new(struct{})
 	}
 
 	return key, instance

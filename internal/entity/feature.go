@@ -7,14 +7,14 @@ type Feature struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }
 
 type FeaturePoint struct {
 	PackageID int `json:"package_id"`
 	FeatureID int `json:"feature_id"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }

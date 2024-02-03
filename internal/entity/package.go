@@ -9,6 +9,6 @@ type Package struct {
 	Description string `json:"description"`
 	AssetUrl    string `json:"asset_url"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }

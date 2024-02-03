@@ -27,6 +27,6 @@ type UserPaymentAccount struct {
 	ID     int `json:"id"`
 	UserID int `json:"user_id"`
 
-	Meta  base.Metadata
-	Extra base.ExtraAttribute
+	base.Metadata
+	base.ExtraAttribute
 }

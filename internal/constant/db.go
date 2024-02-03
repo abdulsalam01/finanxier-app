@@ -16,3 +16,8 @@ const (
 	SubscriptionsPlanTable = "subscription_plan"
 	UsersTable             = "users"
 )
+
+// Common error list database.
+const (
+	ErrDuplicateKeyValue = "23505"
+)
