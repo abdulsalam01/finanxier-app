@@ -7,6 +7,7 @@ import (
 	"github.com/finanxier-app/internal/entity/base"
 )
 
+//go:generate mockgen -destination=product_mock.go -source=types.go -package=product
 type productResource interface {
 	// Get area.
 	GetByID(ctx context.Context, id string) (entity.Product, error)

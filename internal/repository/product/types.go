@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
+//go:generate mockgen -destination=product_mock.go -source=types.go -package=product
 type Product struct {
 	ID    string  `json:"id" db:"id" table:"products"`
 	Name  string  `json:"name" db:"name"`

@@ -19,7 +19,7 @@ type BaseAppInitializer struct {
 	db.DatabaseHelper
 	redis.RedisHelper
 	redis.RedisLockerHelper
-	*validator.Validate
+	ValidatorResource
 }
 
 // Base initializer function to return base of application requirements.
@@ -102,7 +102,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	return initializer, nil
 }
 
-func (b *BaseAppInitializer) Lock(ctx context.Context, key string) (*redislock.Lock, error) {
+func (b *BaseAppInitializer) Lock(ctx context.Context, key string) (redis.RedisLockResource, error) {
 	lock, err := b.RedisLockerHelper.Locker.Obtain(ctx, key, constant.LockerTTL, &redislock.Options{})
 	if err != nil {
 		return lock, err

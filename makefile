@@ -4,7 +4,7 @@ GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GORUN=$(GOCMD) run
-BINARY_NAME=api-sekejap
+BINARY_NAME=finanxier-app
 BINARY_UNIX=$(BINARY_NAME)_unix
 # Use the type variable from the command line or default to 'defaultType'
 type ?= defaultType

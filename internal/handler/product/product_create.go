@@ -26,7 +26,7 @@ func (h *Handler) CreateProduct(w http.ResponseWriter, r *http.Request) (interfa
 	if err = json.NewDecoder(r.Body).Decode(&product); err != nil {
 		return nil, err
 	}
-	if err = h.baseApp.Validate.Struct(product); err != nil {
+	if err = h.baseApp.Struct(product); err != nil {
 		return nil, err
 	}
 

@@ -1,10 +1,8 @@
 package user
 
-import "github.com/finanxier-app/cmd/app"
-
 func New(
 	userUsecase userUsecase,
-	baseApp app.BaseAppInitializer,
+	baseApp baseAppInitializerResource,
 ) *Handler {
 	return &Handler{
 		userUsecase: userUsecase,

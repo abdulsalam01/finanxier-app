@@ -1,10 +1,8 @@
 package product
 
-import "github.com/finanxier-app/cmd/app"
-
 func New(
 	productUsecase productUsecase,
-	baseApp app.BaseAppInitializer,
+	baseApp baseAppInitializerResource,
 ) *Handler {
 	return &Handler{
 		productUsecase: productUsecase,

@@ -73,8 +73,8 @@ func main() {
 
 	// Init handler.
 	logrus.Info("Initialize handler")
-	productHandler := productHandler.New(productUsecase, baseInitializer)
-	userHandler := userHandler.New(userUsecase, baseInitializer)
+	productHandler := productHandler.New(productUsecase, &baseInitializer)
+	userHandler := userHandler.New(userUsecase, &baseInitializer)
 
 	// Init routes.
 	logrus.Info("Setup routes")

@@ -1,0 +1,16 @@
+# Ignore the vendor directory
+vendor/
+
+# Ignore .git and .gitignore
+.git
+.gitignore
+
+# Ignore .env file which may contain sensitive data
+.env
+
+# Ignore test files
+*_test.go
+
+# Ignore miscellaneous files
+.DS_Store
+*.log

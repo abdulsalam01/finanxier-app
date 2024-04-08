@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: FinanxierApp
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      APP_ENV: development
+      DB_DRIVER: postgre
+      DB_PORT: 5432
+      DB_HOST: db  # Using the service name as the hostname for internal Docker network communication
+      DB_NAME: finanxier-app
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_SSL_MODE: disable
+      DB_TIMEOUT: 1000ms
+      DB_MAX_CONN: 100
+      DB_MIN_CONN: 2
+      DB_IDLE_CONN: 10
+      REDIS_HOST: redis:6379
+      JWT_SECRET_KEY: ewBcYxlUIe
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app_network
+
+  db:
+    image: postgres:latest
+    container_name: FinanxierAppDB
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: finanxier-app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/data
+    networks:
+      - app_network
+
+  redis:
+    image: redis:latest
+    container_name: FinanxierAppRedis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - app_network
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  app_network:
+    driver: bridge

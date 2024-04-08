@@ -21,6 +21,15 @@ type redisResources interface {
 	ScriptLoad(ctx context.Context, script string) *redis.StringCmd
 }
 
+type RedisLockResource interface {
+	Key() string
+	Metadata() string
+	Refresh(ctx context.Context, ttl time.Duration, opt *redislock.Options) error
+	Release(ctx context.Context) error
+	TTL(ctx context.Context) (time.Duration, error)
+	Token() string
+}
+
 type redisLockerResources interface {
 	Obtain(ctx context.Context, key string, ttl time.Duration, opt *redislock.Options) (*redislock.Lock, error)
 }
