@@ -40,7 +40,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./pgdata:/data
+      - ./data/pgdata:/data
       - ./postgres/conf/pg_hba.conf:/data/pg_hba.conf      
     networks:
       - app_network
