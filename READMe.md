@@ -40,9 +40,10 @@ This project is a RESTful API service written in Golang designed to manage produ
 
 1. Create a database called `finanxier-app` on PostgreSQL.
 2. Set up PostgreSQL connection credentials to `postgres` as both the username and password.
-3. Run `redis-server` on your local machine.
-4. Execute the command: `make run-http`.
-5. You're done!
+3. Make sure you're already set the `config/manager/app.yaml` with your database configuration.
+4. Run `redis-server` on your local machine.
+5. Execute the command: `make run-http`.
+6. You're done!
 
 ## Database Schema
 
