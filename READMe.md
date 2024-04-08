@@ -126,13 +126,13 @@ There are two tables:
 
 5. **(Bypass) Generate Valid Token:** `GET /token-generator` without any header.
    - Response:
-   ```json
-   {
-    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTI2NTcxMTcsInVzZXIiOiJhZG1pbiJ9.l0E9WPd_IMXqE2yKoA9IhHc29aZObGDUjVrkxzSXI1g",
-    "message": "Successfully executed",
-    "success": true
-   }
-   ```
+    ```json
+    {
+        "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTI2NTcxMTcsInVzZXIiOiJhZG1pbiJ9.l0E9WPd_IMXqE2yKoA9IhHc29aZObGDUjVrkxzSXI1g",
+        "message": "Successfully executed",
+        "success": true
+    }
+    ```
 
 ## Libraries Used
 
