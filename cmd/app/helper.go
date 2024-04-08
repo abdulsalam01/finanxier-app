@@ -38,7 +38,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	 * Configuration layer.
 	 * Database section.
 	 */
-	dbUrlConnection := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=%s",
+	dbUrlConnection := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		config.Database.Username,
 		config.Database.Password,
 		config.Database.Host,
