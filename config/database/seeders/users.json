@@ -1,0 +1,8 @@
+[
+    {
+        "id": "b56980ac-3ccd-42e0-affe-732e7f46c019",
+        "username": "admin",
+        "password_hash": "willHashAfterExecuted",
+        "is_active": true
+    }
+]

@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/api-sekejap/internal/constant"
+	"github.com/finanxier-app/internal/constant"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 

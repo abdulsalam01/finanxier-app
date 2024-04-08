@@ -1,4 +1,4 @@
-package user
+package product
 
 import (
 	"context"
@@ -8,10 +8,10 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-type User struct {
-	ID           string `json:"id" db:"id" table:"products"`
-	Username     string `json:"username" db:"username"`
-	PasswordHash string `json:"password_hash" db:"password_hash"`
+type Product struct {
+	ID    string  `json:"id" db:"id" table:"products"`
+	Name  string  `json:"name" db:"name"`
+	Price float64 `json:"price" db:"price"`
 
 	base.Metadata
 	base.ExtraAttribute
@@ -23,7 +23,6 @@ type databaseResource interface {
 	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
 }
 
-type UsersRepo struct {
-	database    databaseResource
-	jwtSetupKey string
+type ProductsRepo struct {
+	database databaseResource
 }

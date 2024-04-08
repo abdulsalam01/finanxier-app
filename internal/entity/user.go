@@ -1,32 +1,32 @@
 package entity
 
-import "github.com/api-sekejap/internal/entity/base"
+import (
+	"github.com/finanxier-app/internal/constant"
+	"github.com/finanxier-app/internal/entity/base"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type User struct {
-	ID           int    `json:"id"`
-	Name         string `json:"name"`
-	Email        string `json:"email"`
+	ID           string `json:"id"`
 	Username     string `json:"username"`
-	PasswordHash string `json:"password_hash"`
-	Salt         string `json:"salt"`
-	IsVerified   bool   `json:"is_verified"`
+	PasswordHash string `json:"password_hash,omitempty"`
 
-	Social  []UserSocialAccount  `json:"social_accounts"`
-	Payment []UserPaymentAccount `json:"payment_accounts"`
-	Meta    base.Metadata
-	Extra   base.ExtraAttribute
+	Meta  base.Metadata       `json:"meta"`
+	Extra base.ExtraAttribute `json:"extra"`
 }
 
-type UserSocialAccount struct {
-	ID       int    `json:"id"`
-	UserID   int    `json:"user_id"`
-	Provider string `json:"provider"`
+// HashPassword hashes a plain text password using bcrypt.
+func (u *User) HashPassword() (string, error) {
+	// GenerateFromPassword hashes the password using bcrypt.DefaultCost.
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.PasswordHash), bcrypt.DefaultCost)
+	if err != nil {
+		return constant.DefaultString, err
+	}
+	return string(hashedPassword), nil
 }
 
-type UserPaymentAccount struct {
-	ID     int `json:"id"`
-	UserID int `json:"user_id"`
-
-	base.Metadata
-	base.ExtraAttribute
+// CheckPasswordHash compares a hashed password with a plain-text password to see if they match.
+func (u *User) CheckPasswordHash(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(password))
+	return err == nil
 }

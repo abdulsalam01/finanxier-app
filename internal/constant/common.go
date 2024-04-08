@@ -1,5 +1,8 @@
 package constant
 
 const (
-	DefaultString = ""
+	DefaultString   = ""
+	DefaultTrailing = "/"
+
+	DefaultInteger = 0
 )

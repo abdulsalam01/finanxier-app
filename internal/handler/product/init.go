@@ -1,13 +1,13 @@
-package user
+package product
 
 import "github.com/finanxier-app/cmd/app"
 
 func New(
-	userUsecase userUsecase,
+	productUsecase productUsecase,
 	baseApp app.BaseAppInitializer,
 ) *Handler {
 	return &Handler{
-		userUsecase: userUsecase,
-		baseApp:     baseApp,
+		productUsecase: productUsecase,
+		baseApp:        baseApp,
 	}
 }

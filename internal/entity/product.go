@@ -1,46 +1,33 @@
 package entity
 
 import (
-	"time"
-
-	"github.com/api-sekejap/internal/entity/base"
+	"github.com/finanxier-app/internal/entity/base"
 )
 
 type Product struct {
-	ID          int     `json:"id"`
-	UserID      int     `json:"user_id"`
-	ChannelID   int     `json:"channel_id"`
-	Name        string  `json:"name"`
-	Slug        string  `json:"slug"`
-	Stock       int64   `json:"stock"`
-	MinStock    int64   `json:"min_stock"` // For alert and warning when the product reach min-stock.
-	Description string  `json:"description"`
-	NormalPrice float64 `json:"normal_price"`
-
-	PriceEvent []ProductPrice `json:"price_events"` // Holder for price event or discount.
-	Asset      []ProductAsset `json:"assets"`
+	ID    string  `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
 
 	base.Metadata
 	base.ExtraAttribute
 }
 
-type ProductPrice struct {
-	ID         int       `json:"id"`
-	ProductID  int       `json:"product_id"`
-	SlashPrice float64   `json:"slash_price"`
-	EventPrice float64   `json:"event_price"`
-	Discount   int       `json:"discount"`
-	ExpiredAt  time.Time `json:"expired_at"`
-
-	base.Metadata
-	base.ExtraAttribute
+// Spesific response.
+type ProductBulkResponse struct {
+	Product []Product `json:"products"`
+	Total   int       `json:"total"`
 }
 
-type ProductAsset struct {
-	ID        int    `json:"id"`
-	ProductID int    `json:"product_id"`
-	Type      int    `json:"type"` // Indicate the asset type, could be: Cover, Slider, Etc.
-	AssetUrl  string `json:"asset_url"`
+// Spesific Handler request.
+type ProductRequest struct {
+	Name  string  `json:"name" validate:"required,min=4"`
+	Price float64 `json:"price" validate:"required,gt=0"`
+}
 
-	base.Metadata
+func (p *ProductRequest) NormalizeRequest() Product {
+	return Product{
+		Name:  p.Name,
+		Price: p.Price,
+	}
 }

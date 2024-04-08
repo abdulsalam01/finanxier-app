@@ -9,12 +9,8 @@ const (
 )
 
 const (
-	ChannelsTable          = "channels"
-	FeaturesTable          = "features"
-	PackagesTable          = "packages"
-	ProductsTable          = "products"
-	SubscriptionsPlanTable = "subscription_plan"
-	UsersTable             = "users"
+	ProductsTable = "products"
+	UsersTable    = "users"
 )
 
 // Common error list database.

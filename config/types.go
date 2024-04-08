@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/api-sekejap/internal/constant"
-	"github.com/api-sekejap/internal/entity"
-	"github.com/api-sekejap/pkg/database"
-	"github.com/api-sekejap/pkg/redis"
+	"github.com/finanxier-app/internal/constant"
+	"github.com/finanxier-app/internal/entity"
+	"github.com/finanxier-app/pkg/database"
+	"github.com/finanxier-app/pkg/redis"
 )
 
 type Config struct {
@@ -12,6 +12,7 @@ type Config struct {
 	database.Database `json:"database" yaml:"database"`
 	redis.MemoryCache `json:"redis" yaml:"redis"`
 	Service           `json:"service" yaml:"services"`
+	JWTConfig         `json:"jwt" yaml:"jwt"`
 }
 
 type App struct {
@@ -20,13 +21,12 @@ type App struct {
 	Environment constant.Env `json:"env" yaml:"env"`
 }
 
-type Service struct {
-	Storage storageService `json:"storage" yaml:"storage"`
-	Auth    authService    `json:"oauth" yaml:"oauth"`
+type JWTConfig struct {
+	SecretKey string `json:"secret_key" yaml:"secret_key"`
 }
 
-type storageService struct {
-	Firebase entity.FirebaseStorage
+type Service struct {
+	Auth authService `json:"oauth" yaml:"oauth"`
 }
 
 type authService struct {

@@ -1,7 +1,7 @@
 package base
 
 type Response[T any] struct {
-	Data    T
+	Data    T      `json:"data"`
 	Message string `json:"message"`
 	Success bool   `json:"success"`
 }

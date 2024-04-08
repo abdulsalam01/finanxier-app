@@ -1,5 +1,5 @@
 app:
-  name: "AppName"
+  name: "FinanxierApp"
   port: "8080"
   env: "development"
 
@@ -7,7 +7,7 @@ database:
   driver: "postgre"
   port: "5432"
   host: "localhost"
-  name: "sekejap-app"
+  name: "finanxier-app"
   user: "postgres"
   password: "postgres"
   extras:
@@ -22,6 +22,9 @@ redis:
   user: ""
   password: ""
 
+jwt:
+  secret_key: "ewBcYxlUIe"
+  
 services:
   storage:
     firebase:

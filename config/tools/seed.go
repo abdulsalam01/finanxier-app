@@ -9,12 +9,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/api-sekejap/config"
-	"github.com/api-sekejap/internal/constant"
-	"github.com/api-sekejap/internal/entity"
-	"github.com/api-sekejap/internal/repository/channel"
-	"github.com/api-sekejap/internal/repository/feature"
-	db "github.com/api-sekejap/pkg/database"
+	"github.com/finanxier-app/config"
+	"github.com/finanxier-app/internal/constant"
+	"github.com/finanxier-app/internal/entity"
+	product "github.com/finanxier-app/internal/repository/product"
+	"github.com/finanxier-app/internal/repository/user"
+	db "github.com/finanxier-app/pkg/database"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -41,8 +41,8 @@ func SchemaSeed(ctx context.Context, base db.DatabaseHelper) error {
 
 	// Executor runners.
 	return runner.exec(ctx, []seederResources{
-		ChannelSeeder{},
-		FeatureSeeder{},
+		ProductSeeder{},
+		UserSeeder{},
 	}, base)
 }
 
@@ -131,15 +131,12 @@ func (s *seederRunner) getTypeInstance(fileName string) (string, any) {
 	}
 
 	switch types {
-	case constant.ChannelsTable:
-		key = constant.ChannelsTable
-		instance = new([]entity.Channel)
+	case constant.ProductsTable:
+		key = constant.ProductsTable
+		instance = new([]entity.Product)
 	case constant.UsersTable:
 		key = constant.UsersTable
 		instance = new([]entity.User)
-	case constant.FeaturesTable:
-		key = constant.FeaturesTable
-		instance = new([]entity.Feature)
 	}
 
 	return key, instance
@@ -147,24 +144,21 @@ func (s *seederRunner) getTypeInstance(fileName string) (string, any) {
 
 // Each struct function seeder implementations.
 func (us UserSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
-	return nil
-}
-func (fs FeatureSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
 	var (
 		err        error
-		dataParser []entity.Feature
+		dataParser []entity.User
 	)
 
-	dataRawParser := data.Data[constant.FeaturesTable]
-	vParserRaw, ok := dataRawParser.(*[]entity.Feature)
+	dataRawParser := data.Data[constant.UsersTable]
+	vParserRaw, ok := dataRawParser.(*[]entity.User)
 	if !ok {
-		return errors.New("Failed parsing")
+		return errors.New("failed parsing")
 	}
 
 	vParser := *vParserRaw
 	dataParser = append(dataParser, vParser...)
 
-	instance := feature.New(base.Database)
+	instance := user.New(base.Database, constant.DefaultString)
 	err = base.WithTx(ctx, func(tx pgx.Tx) error {
 		for _, v := range dataParser {
 			if _, err = instance.Create(ctx, v); err != nil {
@@ -177,22 +171,22 @@ func (fs FeatureSeeder) Seed(ctx context.Context, data seederRunner, base db.Dat
 
 	return err
 }
-func (cs ChannelSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
+func (cs ProductSeeder) Seed(ctx context.Context, data seederRunner, base db.DatabaseHelper) error {
 	var (
 		err        error
-		dataParser []entity.Channel
+		dataParser []entity.Product
 	)
 
-	dataRawParser := data.Data[constant.ChannelsTable]
-	vParserRaw, ok := dataRawParser.(*[]entity.Channel)
+	dataRawParser := data.Data[constant.ProductsTable]
+	vParserRaw, ok := dataRawParser.(*[]entity.Product)
 	if !ok {
-		return errors.New("Failed parsing")
+		return errors.New("failed parsing")
 	}
 
 	vParser := *vParserRaw
 	dataParser = append(dataParser, vParser...)
 
-	instance := channel.New(base.Database)
+	instance := product.New(base.Database)
 	err = base.WithTx(ctx, func(tx pgx.Tx) error {
 		for _, v := range dataParser {
 			if _, err = instance.Create(ctx, v); err != nil {

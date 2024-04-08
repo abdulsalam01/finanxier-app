@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/api-sekejap/config"
-	"github.com/api-sekejap/internal/constant"
-	db "github.com/api-sekejap/pkg/database"
-	redis "github.com/api-sekejap/pkg/redis"
+	"github.com/bsm/redislock"
+	"github.com/finanxier-app/config"
+	"github.com/finanxier-app/internal/constant"
+	db "github.com/finanxier-app/pkg/database"
+	redis "github.com/finanxier-app/pkg/redis"
+	"github.com/go-playground/validator/v10"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 )
@@ -17,6 +19,7 @@ type BaseAppInitializer struct {
 	db.DatabaseHelper
 	redis.RedisHelper
 	redis.RedisLockerHelper
+	*validator.Validate
 }
 
 // Base initializer function to return base of application requirements.
@@ -75,6 +78,7 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 	 * Configuration layer.
 	 * Logger section.
 	 */
+	schemaValidator := validator.New()
 
 	/*
 	 * Configuration layer.
@@ -93,6 +97,16 @@ func Initializer(ctx context.Context, config *config.Config) (BaseAppInitializer
 		db.DatabaseHelper{Database: dbPool},
 		redis.RedisHelper{Memory: redisMemory},
 		redis.RedisLockerHelper{Locker: redisLocker},
+		schemaValidator,
 	}
 	return initializer, nil
+}
+
+func (b *BaseAppInitializer) Lock(ctx context.Context, key string) (*redislock.Lock, error) {
+	lock, err := b.RedisLockerHelper.Locker.Obtain(ctx, key, constant.LockerTTL, &redislock.Options{})
+	if err != nil {
+		return lock, err
+	}
+
+	return lock, nil
 }

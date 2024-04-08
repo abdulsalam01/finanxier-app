@@ -3,7 +3,7 @@ package tools
 import (
 	"context"
 
-	db "github.com/api-sekejap/pkg/database"
+	db "github.com/finanxier-app/pkg/database"
 )
 
 type seederRunner struct {
@@ -20,6 +20,5 @@ type seederResources interface {
 }
 
 // Implement Seeder for all tables.
-type ChannelSeeder struct{}
+type ProductSeeder struct{}
 type UserSeeder struct{}
-type FeatureSeeder struct{}
