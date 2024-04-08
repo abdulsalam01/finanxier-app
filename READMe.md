@@ -54,6 +54,7 @@ There are two tables:
 ## Endpoints
 
 **Base URL:** `/api/v1`
+**Base PORT:** `:8080`
 
 1. **Get Product by ID:** `GET /product/{id}` with header `Authorization: Bearer <token>`
    Response:
@@ -124,7 +125,7 @@ There are two tables:
      ```
 
 5. **(Bypass) Generate Valid Token:** `GET /token-generator` without any header.
-   Response:
+    Response:
    ```json
    {
     "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MTI2NTcxMTcsInVzZXIiOiJhZG1pbiJ9.l0E9WPd_IMXqE2yKoA9IhHc29aZObGDUjVrkxzSXI1g",
