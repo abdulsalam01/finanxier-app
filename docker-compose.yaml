@@ -12,7 +12,7 @@ services:
       APP_ENV: development
       DB_DRIVER: postgre
       DB_PORT: 5432
-      DB_HOST: db  # Static IP of the db service
+      DB_HOST: db  # Service name
       DB_NAME: finanxier-app
       DB_USER: postgres
       DB_PASSWORD: postgres

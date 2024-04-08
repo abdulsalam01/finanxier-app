@@ -6,7 +6,7 @@ app:
 database:
   driver: "postgre"
   port: "5432"
-  host: "localhost"
+  host: "FinanxierAppDB"
   name: "finanxier-app"
   user: "postgres"
   password: "postgres"
