@@ -12,7 +12,7 @@ services:
       APP_ENV: development
       DB_DRIVER: postgre
       DB_PORT: 5432
-      DB_HOST: db  # Using the service name as the hostname for internal Docker network communication
+      DB_HOST: db  # Static IP of the db service
       DB_NAME: finanxier-app
       DB_USER: postgres
       DB_PASSWORD: postgres
@@ -33,12 +33,15 @@ services:
     image: postgres:latest
     container_name: FinanxierAppDB
     restart: unless-stopped
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: finanxier-app
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - pgdata:/data
+      - ./pgdata:/data
+      - ./postgres/conf/pg_hba.conf:/data/pg_hba.conf      
     networks:
       - app_network
 
