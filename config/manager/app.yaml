@@ -18,7 +18,7 @@ database:
     idle: 10 # Idle connection.
 
 redis:
-  host: "localhost:6379"
+  host: "FinanxierAppRedis:6379"
   user: ""
   password: ""
 
