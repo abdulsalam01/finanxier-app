@@ -30,7 +30,7 @@ func JWTAuthMiddleware(secretKey string) func(http.Handler) http.Handler {
 			}
 
 			authHeader := r.Header.Get(constant.HTTPHeaderAuthorization)
-			if authHeader == "" {
+			if authHeader == constant.DefaultString {
 				mapData.Message = "Authorization header is missing"
 				// Safe operation, without breaking changes or flow.
 				jsonResponse, err = json.Marshal(mapData) //nolint:all

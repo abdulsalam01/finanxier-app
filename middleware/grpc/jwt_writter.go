@@ -3,6 +3,8 @@ package grpc
 import (
 	"context"
 
+	"github.com/finanxier-app/internal/constant"
+	"github.com/finanxier-app/pkg/strings"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -16,8 +18,8 @@ func JWTAuthMiddleware(ctx context.Context, req interface{}, info *grpc.UnarySer
 		return nil, status.Errorf(codes.InvalidArgument, "retrieving metadata failed")
 	}
 
-	token, ok := md["authorization"]
-	if !ok || len(token) < 2 {
+	token, ok := md[strings.Lower(constant.HTTPHeaderAuthorization)]
+	if !ok || len(token) < 1 {
 		return nil, status.Errorf(codes.Unauthenticated, "authorization token is not provided")
 	}
 

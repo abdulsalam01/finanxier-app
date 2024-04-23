@@ -77,19 +77,19 @@ func main() {
 	productHandler := productHandler.New(productUsecase, &baseInitializer)
 	userHandler := userHandler.New(userUsecase, &baseInitializer)
 
-	// Server configurations.
-	// Init gRPC.
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", configs.App.Port))
-	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
-	}
-
 	// Register all methods.
 	grpcServer := registerMethods(
 		ctx,
 		productHandler,
 		userHandler,
 	)
+
+	// Server configurations.
+	// Init gRPC.
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", configs.App.Port))
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
 
 	logrus.Info("Server listening at ", listener.Addr())
 	if err := grpcServer.Serve(listener); err != nil {
@@ -102,8 +102,9 @@ func registerMethods(
 	pHandle *productHandler.Handler,
 	uHandle *userHandler.Handler,
 ) *grpc.Server {
-	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(
+	grpcServer := grpc.NewServer(grpc.ChainUnaryInterceptor(
 		_middleware.JWTAuthMiddleware,
+		_middleware.LoggerMiddleware,
 	))
 
 	// Register.
