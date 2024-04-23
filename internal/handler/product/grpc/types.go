@@ -24,5 +24,6 @@ type Handler struct {
 	productUsecase productUsecase
 	baseApp        baseAppInitializerResource
 
-	pb.UnimplementedProductServiceServer
+	pb.ProductServiceServer
+	// pb.UnimplementedProductServiceServer // General simply implementation.
 }
