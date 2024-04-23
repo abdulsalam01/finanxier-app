@@ -17,7 +17,7 @@ import (
 	productUc "github.com/finanxier-app/internal/usecase/product"
 	userUc "github.com/finanxier-app/internal/usecase/user"
 
-	_middleware "github.com/finanxier-app/middleware"
+	_middleware "github.com/finanxier-app/middleware/http"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -43,6 +43,9 @@ func main() {
 	// Init initializer.
 	logrus.Info("Load initializer helper")
 	baseInitializer, err := app.Initializer(ctx, configs)
+	if err != nil {
+		return
+	}
 
 	// Only do for dev mode.
 	if configs.IsDevelopmentMode() {

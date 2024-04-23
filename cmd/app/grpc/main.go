@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 
@@ -9,8 +10,12 @@ import (
 	"github.com/finanxier-app/config"
 	"github.com/finanxier-app/config/tools"
 	productHandler "github.com/finanxier-app/internal/handler/product/grpc"
+	userHandler "github.com/finanxier-app/internal/handler/user"
 	"github.com/finanxier-app/internal/repository/product"
+	"github.com/finanxier-app/internal/repository/user"
 	productUc "github.com/finanxier-app/internal/usecase/product"
+	userUc "github.com/finanxier-app/internal/usecase/user"
+	_middleware "github.com/finanxier-app/middleware/grpc"
 	"github.com/sirupsen/logrus"
 
 	"google.golang.org/grpc"
@@ -60,29 +65,51 @@ func main() {
 	// Init repo.
 	logrus.Info("Initialize repo")
 	productRepo := product.New(baseInitializer.Database)
+	userRepo := user.New(baseInitializer.Database, configs.SecretKey)
 
 	// Init usecase.
 	logrus.Info("Initialize usecase")
 	productUsecase := productUc.New(productRepo)
+	userUsecase := userUc.New(userRepo)
 
 	// Init handler.
 	logrus.Info("Initialize handler")
 	productHandler := productHandler.New(productUsecase, &baseInitializer)
+	userHandler := userHandler.New(userUsecase, &baseInitializer)
 
+	// Server configurations.
 	// Init gRPC.
-	listener, err := net.Listen("tcp", ":50051")
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", configs.App.Port))
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer(grpc.ChainUnaryInterceptor())
-	// Register.
-	pb.RegisterProductServiceServer(grpcServer, productHandler)
-	// Register reflection service on gRPC server.
-	reflection.Register(grpcServer)
+	// Register all methods.
+	grpcServer := registerMethods(
+		ctx,
+		productHandler,
+		userHandler,
+	)
 
 	logrus.Info("Server listening at ", listener.Addr())
 	if err := grpcServer.Serve(listener); err != nil {
 		logrus.Fatalf("Failed to serve: %v", err)
 	}
+}
+
+func registerMethods(
+	ctx context.Context,
+	pHandle *productHandler.Handler,
+	uHandle *userHandler.Handler,
+) *grpc.Server {
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(
+		_middleware.JWTAuthMiddleware,
+	))
+
+	// Register.
+	pb.RegisterProductServiceServer(grpcServer, pHandle)
+	// Register reflection service on gRPC server.
+	reflection.Register(grpcServer)
+
+	return grpcServer
 }
