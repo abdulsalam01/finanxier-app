@@ -92,9 +92,7 @@ func main() {
 	}
 
 	logrus.Info("Server listening at ", listener.Addr())
-	if err := grpcServer.Serve(listener); err != nil {
-		logrus.Fatalf("Failed to serve: %v", err)
-	}
+	grpcServer.Serve(listener)
 }
 
 func registerMethods(
