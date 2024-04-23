@@ -99,8 +99,8 @@ func main() {
 
 func registerMethods(
 	ctx context.Context,
-	pHandle *productHandler.Handler,
-	uHandle *userHandler.Handler,
+	pHandler *productHandler.Handler,
+	uHandler *userHandler.Handler,
 ) *grpc.Server {
 	grpcServer := grpc.NewServer(grpc.ChainUnaryInterceptor(
 		_middleware.JWTAuthMiddleware,
@@ -108,7 +108,7 @@ func registerMethods(
 	))
 
 	// Register.
-	pb.RegisterProductServiceServer(grpcServer, pHandle)
+	pb.RegisterProductServiceServer(grpcServer, pHandler)
 	// Register reflection service on gRPC server.
 	reflection.Register(grpcServer)
 
