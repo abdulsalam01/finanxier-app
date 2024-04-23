@@ -1,4 +1,4 @@
-package user
+package http
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/finanxier-app/pkg/redis"
 )
 
-//go:generate mockgen -destination=user_mock.go -source=types.go -package=user
+//go:generate mockgen -destination=user_mock.go -source=types.go -package=http
 
 type userUsecase interface {
 	GetCurrentUser(ctx context.Context, token any) (entity.User, error)

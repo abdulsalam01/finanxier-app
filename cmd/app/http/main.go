@@ -11,7 +11,7 @@ import (
 	"github.com/finanxier-app/config/tools"
 	"github.com/finanxier-app/internal/constant"
 	productHandler "github.com/finanxier-app/internal/handler/product/http"
-	userHandler "github.com/finanxier-app/internal/handler/user"
+	userHandler "github.com/finanxier-app/internal/handler/user/http"
 	"github.com/finanxier-app/internal/repository/product"
 	"github.com/finanxier-app/internal/repository/user"
 	productUc "github.com/finanxier-app/internal/usecase/product"

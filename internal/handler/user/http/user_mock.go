@@ -7,7 +7,7 @@
 //
 
 // Package user is a generated GoMock package.
-package user
+package http
 
 import (
 	context "context"

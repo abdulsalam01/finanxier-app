@@ -10,7 +10,7 @@ import (
 	"github.com/finanxier-app/config"
 	"github.com/finanxier-app/config/tools"
 	productHandler "github.com/finanxier-app/internal/handler/product/grpc"
-	userHandler "github.com/finanxier-app/internal/handler/user"
+	userHandler "github.com/finanxier-app/internal/handler/user/grpc"
 	"github.com/finanxier-app/internal/repository/product"
 	"github.com/finanxier-app/internal/repository/user"
 	productUc "github.com/finanxier-app/internal/usecase/product"
