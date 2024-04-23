@@ -5,7 +5,6 @@ import (
 
 	"github.com/finanxier-app/internal/entity/base"
 	pb "github.com/finanxier-app/proto/gen"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (h *Handler) GetByParams(ctx context.Context, req *pb.ProductRequest) (*pb.ProductResponse, error) {
@@ -27,18 +26,27 @@ func (h *Handler) GetByParams(ctx context.Context, req *pb.ProductRequest) (*pb.
 
 	// Normalize response.
 	for _, v := range products.Product {
-		res.Products = append(res.Products, &pb.Product{
-			Id:    v.ID,
-			Name:  v.Name,
-			Price: float32(v.Price),
-			Meta: &pb.Extra{
-				CreatedBy: int32(v.CreatedBy),
-				UpdatedBy: int64(v.UpdatedBy),
-				CreatedAt: timestamppb.New(v.CreatedAt),
-				UpdatedAt: timestamppb.New(v.UpdatedAt),
-			},
-		})
+		res.Products = append(res.Products, v.Normalize())
 	}
 
+	return res, nil
+}
+
+func (h *Handler) GetByID(ctx context.Context, req *pb.ProductParams) (*pb.Product, error) {
+	var (
+		res *pb.Product
+		err error
+	)
+
+	// Normalize input.
+	args := req.Id
+
+	product, err := h.productUsecase.GetByID(ctx, args)
+	if err != nil {
+		return res, err
+	}
+
+	// Normalize response.
+	res = product.Normalize()
 	return res, nil
 }

@@ -2,6 +2,8 @@ package entity
 
 import (
 	"github.com/finanxier-app/internal/entity/base"
+	pb "github.com/finanxier-app/proto/gen"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Product struct {
@@ -29,5 +31,19 @@ func (p *ProductRequest) NormalizeRequest() Product {
 	return Product{
 		Name:  p.Name,
 		Price: p.Price,
+	}
+}
+
+func (p *Product) Normalize() *pb.Product {
+	return &pb.Product{
+		Id:    p.ID,
+		Name:  p.Name,
+		Price: float32(p.Price),
+		Meta: &pb.Extra{
+			CreatedBy: int32(p.CreatedBy),
+			UpdatedBy: int64(p.UpdatedBy),
+			CreatedAt: timestamppb.New(p.CreatedAt),
+			UpdatedAt: timestamppb.New(p.UpdatedAt),
+		},
 	}
 }
