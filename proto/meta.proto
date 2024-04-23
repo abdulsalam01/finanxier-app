@@ -1,0 +1,14 @@
+syntax = "proto3";
+package meta;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/";
+
+message Extra {
+    int32 created_by = 10;
+    int64 updated_by = 11;
+    google.protobuf.Timestamp created_at = 12;
+    google.protobuf.Timestamp updated_at = 13;
+
+}

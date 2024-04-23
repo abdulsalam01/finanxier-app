@@ -6,7 +6,7 @@ app:
 database:
   driver: "postgre"
   port: "5432"
-  host: "FinanxierAppDB"
+  host: "localhost"
   name: "finanxier-app"
   user: "postgres"
   password: "postgres"
@@ -18,7 +18,7 @@ database:
     idle: 10 # Idle connection.
 
 redis:
-  host: "FinanxierAppRedis:6379"
+  host: "localhost:6379"
   user: ""
   password: ""
 

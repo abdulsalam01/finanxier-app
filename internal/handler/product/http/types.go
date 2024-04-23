@@ -1,4 +1,4 @@
-package product
+package http
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/finanxier-app/pkg/redis"
 )
 
-//go:generate mockgen -destination=product_mock.go -source=types.go -package=product
+//go:generate mockgen -destination=product_mock.go -source=types.go -package=http
 type productUsecase interface {
 	Create(ctx context.Context, params entity.Product) (entity.Product, error)
 	GetByID(ctx context.Context, id string) (entity.Product, error)

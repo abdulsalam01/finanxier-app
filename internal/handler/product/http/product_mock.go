@@ -7,7 +7,7 @@
 //
 
 // Package product is a generated GoMock package.
-package product
+package http
 
 import (
 	context "context"

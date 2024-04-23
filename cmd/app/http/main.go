@@ -10,7 +10,7 @@ import (
 	"github.com/finanxier-app/config"
 	"github.com/finanxier-app/config/tools"
 	"github.com/finanxier-app/internal/constant"
-	productHandler "github.com/finanxier-app/internal/handler/product"
+	productHandler "github.com/finanxier-app/internal/handler/product/http"
 	userHandler "github.com/finanxier-app/internal/handler/user"
 	"github.com/finanxier-app/internal/repository/product"
 	"github.com/finanxier-app/internal/repository/user"

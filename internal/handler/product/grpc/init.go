@@ -1,4 +1,4 @@
-package product
+package grpc
 
 func New(
 	productUsecase productUsecase,

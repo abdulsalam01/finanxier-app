@@ -1,4 +1,4 @@
-package product
+package http
 
 import (
 	"encoding/json"
