@@ -5,6 +5,7 @@ import (
 
 	"github.com/finanxier-app/internal/entity/base"
 	pb "github.com/finanxier-app/proto/gen"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (h *Handler) GetByParams(ctx context.Context, req *pb.ProductRequest) (*pb.ProductResponse, error) {
@@ -33,6 +34,8 @@ func (h *Handler) GetByParams(ctx context.Context, req *pb.ProductRequest) (*pb.
 			Meta: &pb.Extra{
 				CreatedBy: int32(v.CreatedBy),
 				UpdatedBy: int64(v.UpdatedBy),
+				CreatedAt: timestamppb.New(v.CreatedAt),
+				UpdatedAt: timestamppb.New(v.UpdatedAt),
 			},
 		})
 	}
